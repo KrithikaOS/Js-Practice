@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="application/xhtml+xml+; charset=UTF-8" />
+    <meta http-equiv="cache-control" content="no-cache; no-store; must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <title>GitHub Users</title>
+</head>
+
+<body>
+    <button id="button" onclick="loadFile()">Get GitHub Users</button>
+    <div id="users"></div>
+
+    <script>
+        function loadFile() {
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', "https://api.github.com/users", true);
+            xhr.onload = function() {
+                if (this.status == 200) {
+                    var resp = JSON.parse(this.responseText);
+                    console.log(resp);
+                    var element = '';
+                    for (var i in resp) {
+                        element += `<div class="user"><img src= ${resp[i].avatar_url} width="70" height="70">
+                            <ul>
+                                <li> ID: ${resp[i].id}</li>
+                                <li> LOGIN: ${resp[i].login}</li> 
+                                </ul>
+                                </div>`
+
+                    }
+                    document.getElementById('users').innerHTML = element;
+                }
+            }
+            xhr.send();
+        }
+    </script>
+
+
+</body>
+
+
+</html>
