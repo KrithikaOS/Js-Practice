@@ -1,0 +1,49 @@
+<script type="module">
+    alert(import.meta.url); // script url (url of the html page for an inline script)
+</script>
+<script type="module">
+    let user = "John"; // The variable is only visible in this module script
+
+</script>
+
+<script type="module">
+    alert(user); // Error: user is not defined
+</script>
+<!-- this doesnt work for modules  -->
+<script>
+    alert(this); // window
+</script>
+
+<script type="module">
+    alert(this); // undefined
+</script>
+<!-- Module scripts are always deferred, same effect as defer attribute 
+(described in the chapter Scripts: async, defer), for both external and inline scripts.
+
+In other words:
+
+downloading external module scripts <script type="module" src="..."> doesn’t block HTML processing, they load in parallel with other resources.
+module scripts wait until the HTML document is fully ready (even if they are tiny and load faster than HTML), and then run.
+relative order of scripts is maintained: scripts that go first in the document, execute first. -->
+
+
+<!-- For non-module scripts, the async attribute only works on external scripts. Async scripts run immediately when ready, independently of other scripts or the HTML document.
+
+For module scripts, it works on inline scripts as well.
+
+For example, the inline script below has async, so it doesn’t wait for anything.
+
+It performs the import (fetches ./analytics.js) and runs when ready, even if the HTML document is not finished yet, or if other scripts are still pending.
+
+That’s good for functionality that doesn’t depend on anything, like counters, ads, document-level event listeners. -->
+
+<script async type="module">
+    import {sayHi} from '../ModulesDemo'; import {sayHi} from 'sayHi'; // Error, "bare" module // the module must have a path, e.g. './sayHi.js' or wherever the module is
+</script>
+
+
+<script nomodule>
+    alert("Modern browsers know both type=module and nomodule, so skip this")
+    alert("Old browsers ignore script with unknown type=module, but execute this.");
+    /*Old browsers do not understand type="module". Scripts of an unknown type are just ignored. For them, it’s possible to provide a fallback using the nomodule attribute*/
+</script>
